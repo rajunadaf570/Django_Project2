@@ -60,7 +60,6 @@ class UserViewSet(GenericViewSet):
             raise ParseException(BAD_REQUEST, serializer.errors)
 
         user = serializer.create(serializer.validated_data)
-        print(user, '---------------------------------kniin----')
         if user:
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
             
@@ -86,3 +85,9 @@ class UserViewSet(GenericViewSet):
         token = user.access_token
         return Response({'token': token},
                         status=status.HTTP_200_OK)
+
+    @action(methods=['post'], detail=False, permission_classes=[IsAuthenticated, ])
+    def  logout(self, request):
+
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)
