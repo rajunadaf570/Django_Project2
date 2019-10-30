@@ -1,3 +1,3 @@
-from django.db import models
-
-# Create your models here.
+#django/rest_framework imports
+# from django.db import models
+from .users.models import *
