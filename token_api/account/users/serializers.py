@@ -26,15 +26,12 @@ class UserRegSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
     def validate(self,data):
-        print('validate************************************')
         return data
 
     def create(self, validated_data):
-        print('create------------------------------------')
         user = User.objects.create(**validated_data)
         user.set_password(validated_data['password'])
         user.save()
-        print(user,'=============================================')
         return user
 
 class UserLoginRequestSerializer(serializers.Serializer):
@@ -50,3 +47,17 @@ class UserLoginRequestSerializer(serializers.Serializer):
             'first_name', 'last_name', 'mobile', 'access_token',
             'is_verified', 'is_active', 'email',
         )
+
+class UserPassUpdateSerializer(serializers.ModelSerializer):
+    '''
+    '''
+    class Meta:
+        model = User
+        fields = ('id', 'password')
+
+    def update(self, instance, validated_data):
+
+        if 'password' in validated_data:
+             instance.set_password(validated_data.get('password'))
+        instance.save()
+        return instance

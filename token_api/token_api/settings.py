@@ -153,3 +153,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Redis Config
+
+REDIS_CONFIG = {
+    "HOST": "",
+    "PORT": 6379,
+    "DB": 0,
+    "PASSWORD": "",
+}
+REDIS_CONFIG["HOST"] = "localhost"
+REDIS_CONFIG["PORT"] = 6379
+REDIS_CONFIG["DB"] = 0
+REDIS_CONFIG["PASSWORD"] = "RajuNadaf"
+
+# Mail Config
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'rajunadaf14@gmail.com'
+EMAIL_HOST_PASSWORD = 'karadiguddi'
