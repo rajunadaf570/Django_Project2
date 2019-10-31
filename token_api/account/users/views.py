@@ -31,7 +31,8 @@ from libs.constants import(
 )
 from libs import(
     mail,
-    redis_client
+    redis_client,
+
 )
 
 class UserViewSet(GenericViewSet):
@@ -40,9 +41,8 @@ class UserViewSet(GenericViewSet):
         return User.objects.all()
 
     serializers_dict = {
-        # 'login': UserLoginRequestSerializer,
-        'register': UserRegSerializer,
         'login': UserLoginRequestSerializer,
+        'register': UserRegSerializer,
         'resetpassword': UserPassUpdateSerializer
     }
 
@@ -111,13 +111,12 @@ class UserViewSet(GenericViewSet):
 
         redis_client.store_key_data(email, otp)
         """
-
         Send otp to mail
         """
         subject = 'G-store otp' 
         message = """Hi,
          {otp} is your G-store password reset code.""".format(otp=otp)
-        mail.sendmail(message , subject, [email])
+        mail.sendmail.delay(message , subject, [email])
         return Response(({'status':'otp sent to mail'}), status=status.HTTP_200_OK)
 
     @action(methods=['post'], detail=False)
@@ -148,13 +147,3 @@ class UserViewSet(GenericViewSet):
 
         serializer.save()
         return Response(({'status':'password updated successfully'}), status=status.HTTP_200_OK)
-
-
-
-
-
-
-
-
-
-

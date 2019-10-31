@@ -5,4 +5,6 @@ from django.conf import settings
 # from .elasticsearch import MyElasticsearch
 from .redis import MyRedisClient
 
+
 redis_client = MyRedisClient()
+

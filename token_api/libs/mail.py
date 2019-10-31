@@ -8,9 +8,13 @@ from django.core.mail import EmailMessage,send_mail
 # project imports
 from token_api.settings import EMAIL_HOST_USER
 
+#Third party imports
+from celery import shared_task
+
 
 logger = logging.getLogger(__name__)
 
+@shared_task
 def sendmail(message,subject,tolist):
 	try:
 		# msg = EmailMessage(subject, message, EMAIL_HOST_USER, tolist) 

@@ -140,7 +140,7 @@ REST_FRAMEWORK = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -174,3 +174,12 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'rajunadaf14@gmail.com'
 EMAIL_HOST_PASSWORD = 'karadiguddi'
+
+# For RabbitMQ
+BROKER_URL = 'amqp://[ipaddress]'
+CELERY_RESULT_BACKEND = 'amqp://[ipaddress]'
+# Celery Data Format
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
