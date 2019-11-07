@@ -11,15 +11,19 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
 
+
 # app level imports
 from .models import (
-    User
+    User,
+    UserDetails,
 )
 
 from .serializers import(
     UserRegSerializer,
     UserLoginRequestSerializer,
     UserPassUpdateSerializer,
+    AddCandidateDetailsSerializer,
+    CandidateListSerializer,
 
 )
 from libs.exceptions import(
@@ -28,6 +32,7 @@ from libs.exceptions import(
 from libs.constants import(
     BAD_ACTION,
     BAD_REQUEST,
+    STATUS,
 )
 from libs import(
     mail,
@@ -37,8 +42,8 @@ from libs import(
 
 class UserViewSet(GenericViewSet):
 
-    def get_queryset(self):
-        return User.objects.all()
+    # def get_queryset(self):
+    #     return User.objects.all()
 
     serializers_dict = {
         'login': UserLoginRequestSerializer,
@@ -60,11 +65,13 @@ class UserViewSet(GenericViewSet):
         '''
         serializer = self.get_serializer(data=request.data)
         print(serializer.is_valid())
-        print(serializer.errors)
         if serializer.is_valid() is False:
             raise ParseException(BAD_REQUEST, serializer.errors)
 
-        user = serializer.create(serializer.validated_data)
+        try: 
+             user = serializer.create(serializer.validated_data)
+        except Exception as e:
+            return Response(({'Failed':str(e)}), status=status.HTTP_409_CONFLICT)
         if user:
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
             
@@ -147,3 +154,76 @@ class UserViewSet(GenericViewSet):
 
         serializer.save()
         return Response(({'status':'password updated successfully'}), status=status.HTTP_200_OK)
+
+
+class UserDetailViewSet(GenericViewSet):
+    '''
+    '''
+    ordering_fields = ('id',)
+    ordering = ('id',)
+    lookup_field = 'id'
+    http_method_names = ['get', 'post', 'put','delete']
+    queryset = UserDetails.objects.all()
+
+    def get_queryset(self,filterdata=None):
+        if filterdata:
+            self.queryset = UserDetails.objects.filter(**filterdata)
+        return self.queryset
+
+    serializers_dict = {
+        'addclient': AddCandidateDetailsSerializer,
+        'getcandidatelist': CandidateListSerializer,
+        'updatecandidatedetail': CandidateListSerializer
+    }
+
+    def get_serializer_class(self):
+        """
+        """
+        try:
+            return self.serializers_dict[self.action]
+        except KeyError as key:
+            raise ParseException(BAD_ACTION, errors=key)
+    
+    @action(methods=['post'], detail=False, permission_classes=[IsAuthenticated, ])
+    def addclient(self, request):
+        """
+        """
+        data = request.data
+        data = data.copy()
+        data['user'] = request.user.id
+        serializer = self.get_serializer(data=data)
+        print(serializer.is_valid())
+        if serializer.is_valid() is False:
+            print(serializer.errors)
+            raise ParseException(BAD_REQUEST, serializer.errors)
+        user = serializer.save()
+        if user:
+            return Response(serializer.errors, status=status.HTTP_201_CREATED)
+            
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=['get'], detail=False, permission_classes=[IsAuthenticated, ])
+    def getcandidatelist(self, request):
+        """
+        """
+        try: 
+            data = self.get_serializer(self.get_queryset().filter(user_id=request.user), many=True).data           
+            # data = self.get_serializer(self.get_queryset().filter(user_id=request.user,id=request.data['id']), many=True).data
+            return Response(data,status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(({'status':'Failed','result':None,'message':str(e)}),
+                status=status.HTTP_404_NOT_FOUND)
+
+    @action(methods=['get'], detail=False, permission_classes=[IsAuthenticated, ])
+    def updatecandidatedetail(self, request):
+        """
+        """
+        try: 
+            data = self.get_serializer(self.get_queryset().filter(
+                   user_id=request.user,id=request.data['id']
+                ), many=True).data  
+
+            return Response(data,status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(({'status':'Failed','result':None,'message':str(e)}),
+                status=status.HTTP_404_NOT_FOUND)

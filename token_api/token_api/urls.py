@@ -12,6 +12,8 @@ router = SimpleRouter()
 #register account app url with router
 router.register(r'accounts', account_views.UserViewSet, base_name='accounts')
 
+router.register(r'details', account_views.UserDetailViewSet, base_name='details')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include((router.urls, 'api'),namespace='v1')),
