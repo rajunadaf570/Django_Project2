@@ -13,9 +13,3 @@ OPERATION_NOT_ALLOWED = {
     "code": "FT_4012",
     "detail": "Operation not allowed"
 }
-
-STATUS = {
-	"status" : "{status}",
-    "result" :	"{result}",
-	"message" : "{message}"	
-}

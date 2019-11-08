@@ -10,6 +10,7 @@ from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # app level imports
@@ -24,6 +25,7 @@ from .serializers import(
     UserPassUpdateSerializer,
     AddCandidateDetailsSerializer,
     CandidateListSerializer,
+    UpdateCandidateDetailsSerializer,
 
 )
 from libs.exceptions import(
@@ -32,7 +34,6 @@ from libs.exceptions import(
 from libs.constants import(
     BAD_ACTION,
     BAD_REQUEST,
-    STATUS,
 )
 from libs import(
     mail,
@@ -173,7 +174,8 @@ class UserDetailViewSet(GenericViewSet):
     serializers_dict = {
         'addclient': AddCandidateDetailsSerializer,
         'getcandidatelist': CandidateListSerializer,
-        'updatecandidatedetail': CandidateListSerializer
+        'getcandidatedetails': CandidateListSerializer,
+        'updatecandidatedetail': UpdateCandidateDetailsSerializer
     }
 
     def get_serializer_class(self):
@@ -185,7 +187,7 @@ class UserDetailViewSet(GenericViewSet):
             raise ParseException(BAD_ACTION, errors=key)
     
     @action(methods=['post'], detail=False, permission_classes=[IsAuthenticated, ])
-    def addclient(self, request):
+    def addcandidate(self, request):
         """
         """
         data = request.data
@@ -215,15 +217,77 @@ class UserDetailViewSet(GenericViewSet):
                 status=status.HTTP_404_NOT_FOUND)
 
     @action(methods=['get'], detail=False, permission_classes=[IsAuthenticated, ])
-    def updatecandidatedetail(self, request):
+    def getcandidatedetails(self, request):
         """
+        To get the perticular candidate details. 
         """
         try: 
             data = self.get_serializer(self.get_queryset().filter(
-                   user_id=request.user,id=request.data['id']
+                    user_id=request.user,id=request.data['id']
                 ), many=True).data  
 
             return Response(data,status=status.HTTP_200_OK)
         except Exception as e:
             return Response(({'status':'Failed','result':None,'message':str(e)}),
                 status=status.HTTP_404_NOT_FOUND)
+
+    @action(
+        methods=['put'],
+        detail=False,
+        permission_classes=[IsAuthenticated, ]
+    )
+    def updatecandidatedetail(self, request):
+        """
+        Modify the candidate details.
+        """
+        try:
+
+            self.objects = UserDetails.objects.get(user_id=request.user, id=request.data['id'])
+            
+            serializer = self.get_serializer(self.objects, data=request.data)
+            print(serializer.is_valid())
+            print(serializer.errors)
+            if serializer.is_valid() is False:
+                raise ParseException(BAD_REQUEST, serializer.errors)
+
+            user = serializer.save()
+            print(user)
+            if user:
+                return Response({},status=status.HTTP_200_OK)
+
+        except ObjectDoesNotExist as e:
+             return Response(({'status':'Failed', 'result':None, 'message':'id is not valid'}),
+                status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response(({'status':'Failed', 'result':None, 'message':str(e)}),
+                status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(
+        methods=['delete'],
+        detail=False,
+        permission_classes=[IsAuthenticated, ]
+    )
+    def deletecandidate(self, request):
+        try:
+            user = UserDetails.objects.get(user_id=request.user, id=request.data['id'])
+            user.delete()
+            return Response(({'status':'deleted successfully'}), status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(({'status':'Failed', 'result':None, 'message':str(e)}),
+                status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+        
+
+
+
+
+            
+
+
+            
+
