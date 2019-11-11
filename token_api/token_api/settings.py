@@ -133,6 +133,16 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 1,
+
+#    Throttling congfig...
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/day',
+        'user': '5/day'
+    }
 }
 
 # Internationalization
@@ -172,8 +182,8 @@ REDIS_CONFIG["PASSWORD"] = "RajuNadaf"
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = '*****************'
-EMAIL_HOST_PASSWORD = '**************'
+EMAIL_HOST_USER = '***************'
+EMAIL_HOST_PASSWORD = '*****************'
 
 # For RabbitMQ
 BROKER_URL = 'amqp://[ipaddress]'
