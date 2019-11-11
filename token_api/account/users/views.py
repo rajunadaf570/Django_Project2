@@ -11,6 +11,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.generics import ListAPIView
 
 
 # app level imports
@@ -157,6 +159,7 @@ class UserViewSet(GenericViewSet):
         return Response(({'status':'password updated successfully'}), status=status.HTTP_200_OK)
 
 
+
 class UserDetailViewSet(GenericViewSet):
     '''
     '''
@@ -172,10 +175,11 @@ class UserDetailViewSet(GenericViewSet):
         return self.queryset
 
     serializers_dict = {
-        'addclient': AddCandidateDetailsSerializer,
+        'addcandidate': AddCandidateDetailsSerializer,
         'getcandidatelist': CandidateListSerializer,
         'getcandidatedetails': CandidateListSerializer,
-        'updatecandidatedetail': UpdateCandidateDetailsSerializer
+        'updatecandidatedetail': UpdateCandidateDetailsSerializer,
+        'some_method': CandidateListSerializer
     }
 
     def get_serializer_class(self):
@@ -207,11 +211,15 @@ class UserDetailViewSet(GenericViewSet):
     @action(methods=['get'], detail=False, permission_classes=[IsAuthenticated, ])
     def getcandidatelist(self, request):
         """
+        To get all the candidate details, with pagination
         """
         try: 
             data = self.get_serializer(self.get_queryset().filter(user_id=request.user), many=True).data           
-            # data = self.get_serializer(self.get_queryset().filter(user_id=request.user,id=request.data['id']), many=True).data
-            return Response(data,status=status.HTTP_200_OK)
+            page = self.paginate_queryset(data)
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
+                return self.get_paginated_response(serializer.data)
+
         except Exception as e:
             return Response(({'status':'Failed','result':None,'message':str(e)}),
                 status=status.HTTP_404_NOT_FOUND)
@@ -279,15 +287,14 @@ class UserDetailViewSet(GenericViewSet):
                 status=status.HTTP_400_BAD_REQUEST)
 
 
+# class LargeResultsSetPagination(PageNumberPagination):
+#     page_size = 2
+#     # age_size_query_param = 'page_size'
+#     # max_page_size = 1
 
-
-        
-
-
-
-
-            
-
-
-            
-
+# class ApiBlogListView(ListAPIView):
+#     queryset = UserDetails.objects.all()
+#     serializer_class = CandidateListSerializer
+#     authenticate_class = (TokenAuthentication, )
+#     permission_classes =(IsAuthenticated, )
+#     pagination_class = PageNumberPagination
