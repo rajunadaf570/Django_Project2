@@ -66,12 +66,12 @@ same as...
 
 ## Notes:
 
-> used DRF and Serializers.
-> used Proper Error codes with 401, 400, 200 and all.
-> Celery and RabbitMQ to send OTP to mail.
-> Authentication token.
-> Throttling to restrict n number or hits.
-> Pagination to split large result sets into individual pages of data.
+#####. used DRF and Serializers.
+#####. used Proper Error codes with 401, 400, 200 and all.
+#####. Celery and RabbitMQ to send OTP to mail.
+#####. Authentication token.
+#####. Throttling to restrict n number or hits.
+#####. Pagination to split large result sets into individual pages of data.
 
 
 
