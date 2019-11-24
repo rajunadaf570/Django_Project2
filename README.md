@@ -11,18 +11,18 @@ Postgres 11
 ## Features (APis):
 ### 1. Register API:
 #### Fields:
-   name, email, password, mobile and address.
+name, email, password, mobile and address.\
 [http://127.0.0.1:8000/api/v1/accounts/register/]
 
 ### 2. Login API:
 #### Fields:
-   email and password.
+email and password.\
 [http://127.0.0.1:8000/api/v1/accounts/login/]
-		--
+--\
 		Output: Token (Django auth token).
 
 ### 3. Logout API:
-   Token is a input.
+Token is a input.\
 [http://127.0.0.1:8000/api/v1/accounts/logout/]
 
 ### 4. Forgot Passwor API:
@@ -37,7 +37,7 @@ Postgres 11
 
 ### 1. Add Client:
 #### Fields:
-  client_name, contact_email, number, address, type(Service/Product based), is_active.
+client_name, contact_email, number, address, type(Service/Product based), is_active.\
 [http://127.0.0.1:8000/api/v1/details/addclient/]
 
 ### 2. GET Client:
@@ -45,7 +45,7 @@ Postgres 11
   Given Id, Get client details.
 
 ### 3.Modify Client:
-  Given id, able to change address,email and contact.
+Given id, able to change address,email and contact.\
 [http://127.0.0.1:8000/api/v1/details/updatecandidatedetail/]
 
 ### 4. List clients:
