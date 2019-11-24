@@ -4,9 +4,9 @@
    Architectured, designed the algorithms to reduce manual work for B2C clients, it Helps the Company to maximize the sales and maintain good track of customers.
 
 ## Tech
-> Python 3.7
-> DJango 2 with DRF
-> Postgres 11
+Python 3.7\
+DJango 2 with DRF\
+Postgres 11\
 
 ## Features (APis):
 ### 1. Register API:
@@ -66,12 +66,12 @@ same as...
 
 ## Notes:
 
-#####. used DRF and Serializers.
-#####. used Proper Error codes with 401, 400, 200 and all.
-#####. Celery and RabbitMQ to send OTP to mail.
-#####. Authentication token.
-#####. Throttling to restrict n number or hits.
-#####. Pagination to split large result sets into individual pages of data.
+> used DRF and Serializers.\
+> used Proper Error codes with 401, 400, 200 and all.\
+> Celery and RabbitMQ to send OTP to mail.\
+> Authentication token.\
+> Throttling to restrict n number or hits.\
+> Pagination to split large result sets into individual pages of data.\
 
 
 
