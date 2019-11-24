@@ -1,18 +1,18 @@
 # HR TOOL
 
 ## About
-	Architectured, designed the algorithms to reduce manual work for B2C clients, it Helps the Company to maximize the sales and maintain good track of customers.
+   Architectured, designed the algorithms to reduce manual work for B2C clients, it Helps the Company to maximize the sales and maintain good track of customers.
 
 ## Tech
-. Python 3.7
-. DJango 2 with DRF
-. Postgres 11
+> Python 3.7
+> DJango 2 with DRF
+> Postgres 11
 
 ## Features (APis):
 ### 1. Register API:
 #### Fields:
 		name, email, password, mobile and address.
-		 [http://127.0.0.1:8000/api/v1/accounts/register/]
+		[http://127.0.0.1:8000/api/v1/accounts/register/]
 
 ### 2. Login API:
 #### Fields:
@@ -64,13 +64,14 @@ same as...
 ### 3. Modify Candidate:
 ### 4. List Candidate:
 
-#Notes:
-		. used DRF and Serializers.
-		. used Proper Error codes with 401, 400, 200 and all.
-		. Celery and RabbitMQ to send OTP to mail.
-		. Authentication token.
-		. Throttling to restrict n number or hits.
-		. Pagination to split large result sets into individual pages of data.
+## Notes:
+
+> used DRF and Serializers.
+> used Proper Error codes with 401, 400, 200 and all.
+> Celery and RabbitMQ to send OTP to mail.
+> Authentication token.
+> Throttling to restrict n number or hits.
+> Pagination to split large result sets into individual pages of data.
 
 
 
