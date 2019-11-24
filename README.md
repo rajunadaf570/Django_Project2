@@ -6,24 +6,24 @@
 ## Tech
 Python 3.7\
 DJango 2 with DRF\
-Postgres 11\
+Postgres 11
 
 ## Features (APis):
 ### 1. Register API:
 #### Fields:
 		name, email, password, mobile and address.
-		[http://127.0.0.1:8000/api/v1/accounts/register/]
+[http://127.0.0.1:8000/api/v1/accounts/register/]
 
 ### 2. Login API:
 #### Fields:
 		email and password.
-		[http://127.0.0.1:8000/api/v1/accounts/login/]
+[http://127.0.0.1:8000/api/v1/accounts/login/]
 		--
 		Output: Token (Django auth token).
 
 ### 3. Logout API:
 		Token is a input.
-		[http://127.0.0.1:8000/api/v1/accounts/logout/]
+[http://127.0.0.1:8000/api/v1/accounts/logout/]
 
 ### 4. Forgot Passwor API:
 		To send the otp to mail.
@@ -38,7 +38,7 @@ Postgres 11\
 ### 1. Add Client:
 #### Fields:
 		client_name, contact_email, number, address, type(Service/Product based), is_active.
-		[http://127.0.0.1:8000/api/v1/details/addclient/]
+[http://127.0.0.1:8000/api/v1/details/addclient/]
 
 ### 2. GET Client:
 #### Fields:
@@ -46,7 +46,7 @@ Postgres 11\
 
 ### 3.Modify Client:
 		Given id, able to change address,email and contact.
-		[http://127.0.0.1:8000/api/v1/details/updatecandidatedetail/]
+[http://127.0.0.1:8000/api/v1/details/updatecandidatedetail/]
 
 ### 4. List clients:
 		Get a list of active client, with paginations.
@@ -64,14 +64,14 @@ same as...
 ### 3. Modify Candidate:
 ### 4. List Candidate:
 
-## Notes:
+## Note:
 
 > used DRF and Serializers.\
 > used Proper Error codes with 401, 400, 200 and all.\
 > Celery and RabbitMQ to send OTP to mail.\
 > Authentication token.\
 > Throttling to restrict n number or hits.\
-> Pagination to split large result sets into individual pages of data.\
+> Pagination to split large result sets into individual pages of data.
 
 
 
